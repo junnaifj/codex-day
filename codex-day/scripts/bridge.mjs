@@ -19,10 +19,15 @@ export async function nativeRequest(input){
 async function verifyListener(){
   const {stdout}=await exec('/usr/sbin/lsof',['-nP',`-iTCP:${port}`,'-sTCP:LISTEN','-FpFn'],{timeout:3000});
   const lines=stdout.trim().split('\n');const pids=[...new Set(lines.filter(l=>/^p\d+$/.test(l)).map(l=>l.slice(1)))];
-  if(pids.length!==1 || lines.filter(l=>l.startsWith('n')).some(l=>!/^n127\.0\.0\.1:9341$/.test(l)))throw Error('Refusing an unverified debug listener.');
-  const {stdout:command}=await exec('/bin/ps',['-p',pids[0],'-o','comm='],{timeout:3000});
-  const executable=command.trim();
-  if(!/^\/.*\/(ChatGPT|Codex)\.app\/Contents\/MacOS\/(ChatGPT|Codex)$/.test(executable))throw Error('Listener does not belong to Codex.');
+  if(!pids.length || lines.filter(l=>l.startsWith('n')).some(l=>!/^n127\.0\.0\.1:9341$/.test(l)))throw Error('Refusing an unverified debug listener.');
+  const processes=await Promise.all(pids.map(async pid=>{const {stdout}=await exec('/bin/ps',['-p',pid,'-o','ppid=,comm='],{timeout:3000});const match=stdout.trim().match(/^(\d+)\s+(.+)$/);if(!match)throw Error('Unknown listener');return {pid,ppid:match[1],executable:match[2]}}));
+  const hosts=processes.filter(p=>/^\/.*\/(ChatGPT|Codex)\.app\/Contents\/MacOS\/(ChatGPT|Codex)$/.test(p.executable));
+  if(hosts.length!==1)throw Error('Expected one official host');
+  const host=hosts[0],executable=host.executable;
+  for(const child of processes.filter(p=>p.pid!==host.pid)){
+    if(child.ppid!==host.pid||child.executable!==path.join(os.homedir(),'.codex/computer-use/Codex Computer Use.app/Contents/MacOS/SkyComputerUseService'))throw Error('Unrelated listener');
+    await exec('/usr/bin/codesign',['--verify','--strict','--test-requirement','=anchor apple generic and certificate leaf[subject.OU] = "2DC432GLL2"',child.executable],{timeout:5000});
+  }
   await exec('/usr/bin/codesign',['--verify','--strict','--test-requirement','=anchor apple generic and certificate leaf[subject.OU] = "2DC432GLL2"',executable],{timeout:5000});
 }
 export function validTarget(t){
@@ -48,7 +53,7 @@ class Session {
   async ensure(){
     if(!this.context){await this.inject();return}
     try{const result=await this.send('Runtime.evaluate',{contextId:this.context,expression:'globalThis.__codexDayUI?.verify()',returnByValue:true});
-      if(result.exceptionDetails||result.result?.value?.version!=='0.3.0')await this.inject();
+      if(result.exceptionDetails||result.result?.value?.version!=='0.3.1')await this.inject();
     }catch{await this.inject()}
   }
   async binding(params){
@@ -68,9 +73,9 @@ async function main(){
     for(const [id,s] of sessions)if(s.closed||!targets.some(t=>t.id===id)){s.ws.close();sessions.delete(id)}
     for(const target of targets)if(!sessions.has(target.id)){const s=new Session(target);try{await s.start();sessions.set(target.id,s)}catch(e){s.ws.close();throw e}}
     for(const session of sessions.values())await session.ensure();
-    await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'connected',windows:sessions.size,version:'0.3.0',checkedAt:new Date().toISOString()}),{mode:0o600});
+    await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'connected',windows:sessions.size,version:'0.3.1',checkedAt:new Date().toISOString()}),{mode:0o600});
     previous='';
-  }catch(e){for(const session of sessions.values())session.ws.close();sessions.clear();await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'waiting-for-extension-launch',version:'0.3.0',checkedAt:new Date().toISOString()}),{mode:0o600}).catch(()=>{});const message='Waiting for Codex local extension connection.';if(previous!==message){console.log(message);previous=message}}
+  }catch(e){for(const session of sessions.values())session.ws.close();sessions.clear();await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'waiting-for-extension-launch',version:'0.3.1',checkedAt:new Date().toISOString()}),{mode:0o600}).catch(()=>{});const message='Waiting for Codex local extension connection.';if(previous!==message){console.log(message);previous=message}}
   await sleep(5000)}
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(()=>process.exit(1));

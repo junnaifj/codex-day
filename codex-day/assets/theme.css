@@ -1,0 +1,26 @@
+/* iOS-inspired material hierarchy: content stays sharp; no blur on scrolling roots. */
+html:not(.electron-dark):not(.dark) body {
+  background: linear-gradient(135deg,#edf2f7 0%,#f4f2f5 55%,#f2efe9 100%) !important;
+}
+html:not(.electron-dark):not(.dark) main:is(.main-surface,[data-app-shell-main-surface],[class*="_MainContentSurface_"]) {
+  background: rgba(250,251,253,.96) !important;
+}
+html:not(.electron-dark):not(.dark) aside.app-shell-left-panel {
+  background: rgba(239,243,248,.88) !important;
+  border-right: 1px solid rgba(70,85,110,.12);
+}
+html:not(.electron-dark):not(.dark) header:is(.app-header-tint,[data-app-shell-header-edge-scroll],[class*="_Header_"]) {
+  background: rgba(246,248,251,.94) !important;
+  border-bottom: 1px solid rgba(70,85,110,.10);
+}
+html:not(.electron-dark):not(.dark) :is(.composer-surface-chrome,[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]) {
+  background: rgba(255,255,255,.96) !important;
+  border: 1px solid rgba(80,96,120,.16) !important;
+  box-shadow: 0 5px 20px rgba(30,45,65,.05) !important;
+}
+html:is(.electron-dark,.dark) body {background:#20242c !important}
+html:is(.electron-dark,.dark) main:is(.main-surface,[data-app-shell-main-surface],[class*="_MainContentSurface_"]) {background:rgba(28,30,35,.98) !important}
+html:is(.electron-dark,.dark) aside.app-shell-left-panel {background:rgba(37,41,49,.94) !important;border-right:1px solid rgba(255,255,255,.10)}
+html:is(.electron-dark,.dark) header:is(.app-header-tint,[data-app-shell-header-edge-scroll],[class*="_Header_"]) {background:rgba(33,37,44,.96) !important;border-bottom:1px solid rgba(255,255,255,.08)}
+html:is(.electron-dark,.dark) :is(.composer-surface-chrome,[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]) {background:rgba(42,45,53,.98) !important;border:1px solid rgba(255,255,255,.16) !important;box-shadow:0 5px 20px rgba(0,0,0,.12) !important}
+/* No opacity/filter/backdrop-filter on host text, editors, headers, or scrollers. */

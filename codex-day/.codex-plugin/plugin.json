@@ -1,0 +1,18 @@
+{
+  "name": "codex-day",
+  "version": "0.2.0",
+  "description": "In-Codex frosted calendar and editable daily sticky notes with local zero-token updates.",
+  "author": {
+    "name": "junnaifj"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Day",
+    "shortDescription": "Calendar and to-dos inside Codex.",
+    "longDescription": "A toolbar toggle opens frosted calendar and to-do cards. A separately installed local runtime connects Apple Calendar and Reminders and extracts explicit tasks at midnight without model calls.",
+    "developerName": "junnaifj",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Help me use Codex Day."
+  }
+}

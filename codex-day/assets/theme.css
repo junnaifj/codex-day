@@ -1,26 +1,8 @@
-/* iOS-inspired material hierarchy: content stays sharp; no blur on scrolling roots. */
-html:not(.electron-dark):not(.dark) body {
-  background: linear-gradient(135deg,#edf2f7 0%,#f4f2f5 55%,#f2efe9 100%) !important;
-}
-html:not(.electron-dark):not(.dark) main:is(.main-surface,[data-app-shell-main-surface],[class*="_MainContentSurface_"]) {
-  background: rgba(250,251,253,.96) !important;
-}
-html:not(.electron-dark):not(.dark) aside.app-shell-left-panel {
-  background: rgba(239,243,248,.88) !important;
-  border-right: 1px solid rgba(70,85,110,.12);
-}
-html:not(.electron-dark):not(.dark) header:is(.app-header-tint,[data-app-shell-header-edge-scroll],[class*="_Header_"]) {
-  background: rgba(246,248,251,.94) !important;
-  border-bottom: 1px solid rgba(70,85,110,.10);
-}
-html:not(.electron-dark):not(.dark) :is(.composer-surface-chrome,[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]) {
-  background: rgba(255,255,255,.96) !important;
-  border: 1px solid rgba(80,96,120,.16) !important;
-  box-shadow: 0 5px 20px rgba(30,45,65,.05) !important;
-}
-html:is(.electron-dark,.dark) body {background:#20242c !important}
-html:is(.electron-dark,.dark) main:is(.main-surface,[data-app-shell-main-surface],[class*="_MainContentSurface_"]) {background:rgba(28,30,35,.98) !important}
-html:is(.electron-dark,.dark) aside.app-shell-left-panel {background:rgba(37,41,49,.94) !important;border-right:1px solid rgba(255,255,255,.10)}
-html:is(.electron-dark,.dark) header:is(.app-header-tint,[data-app-shell-header-edge-scroll],[class*="_Header_"]) {background:rgba(33,37,44,.96) !important;border-bottom:1px solid rgba(255,255,255,.08)}
-html:is(.electron-dark,.dark) :is(.composer-surface-chrome,[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]) {background:rgba(42,45,53,.98) !important;border:1px solid rgba(255,255,255,.16) !important;box-shadow:0 5px 20px rgba(0,0,0,.12) !important}
-/* No opacity/filter/backdrop-filter on host text, editors, headers, or scrollers. */
+/* Explicit palettes: translucent surfaces and opaque text. No content filters. */
+html[data-codex-day-appearance="light"], html[data-codex-day-appearance="light"] body {color-scheme:light;color:#20242c!important;--day-panel:rgba(246,249,253,.52);--day-field:rgba(255,255,255,.65);--day-border:rgba(60,78,104,.16);--color-text:#20242c!important;--color-text-primary:#20242c!important;--text-primary:#20242c!important;--app-color-text-foreground:#20242c!important;--app-color-foreground-application-menu:#20242c!important;--color-text-secondary:#566171!important;--color-text-tertiary:#566171!important;--color-codex-description:#566171!important;--app-color-text-secondary:#566171!important;--app-color-text-foreground-secondary:#566171!important;--app-color-text-foreground-tertiary:#566171!important;--color-background-panel:rgba(246,249,253,.52)!important;--color-background-surface:rgba(246,249,253,.52)!important;--app-color-background-surface:rgba(246,249,253,.52)!important;--app-shell-panel-background:rgba(246,249,253,.52)!important;--color-background-composer-primary:rgba(255,255,255,.65)!important;--color-background-composer-action-bar:rgba(255,255,255,.65)!important;--composer-layout-surface-background:rgba(255,255,255,.65)!important;--app-color-background-elevated-primary:rgba(255,255,255,.65)!important;--app-color-background-editor-opaque:rgba(255,255,255,.65)!important;}
+html[data-codex-day-appearance="light"] body {min-height:100vh;background:radial-gradient(ellipse at 15% 20%,#b9d1e2,transparent 65%),radial-gradient(ellipse at 90% 80%,#dfcbbb,transparent 65%),#e5eaf0!important;background-attachment:fixed!important}
+html[data-codex-day-appearance="dark"], html[data-codex-day-appearance="dark"] body {color-scheme:dark;color:#eef2f8!important;--day-panel:rgba(24,30,40,.52);--day-field:rgba(34,42,55,.7);--day-border:rgba(210,225,245,.18);--color-text:#eef2f8!important;--color-text-primary:#eef2f8!important;--text-primary:#eef2f8!important;--app-color-text-foreground:#eef2f8!important;--app-color-foreground-application-menu:#eef2f8!important;--color-text-secondary:#bcc7d6!important;--color-text-tertiary:#bcc7d6!important;--color-codex-description:#bcc7d6!important;--app-color-text-secondary:#bcc7d6!important;--app-color-text-foreground-secondary:#bcc7d6!important;--app-color-text-foreground-tertiary:#bcc7d6!important;--color-background-panel:rgba(24,30,40,.52)!important;--color-background-surface:rgba(24,30,40,.52)!important;--app-color-background-surface:rgba(24,30,40,.52)!important;--app-shell-panel-background:rgba(24,30,40,.52)!important;--color-background-composer-primary:rgba(34,42,55,.7)!important;--color-background-composer-action-bar:rgba(34,42,55,.7)!important;--composer-layout-surface-background:rgba(34,42,55,.7)!important;--app-color-background-elevated-primary:rgba(34,42,55,.7)!important;--app-color-background-editor-opaque:rgba(34,42,55,.7)!important;}
+html[data-codex-day-appearance="dark"] body {min-height:100vh;background:radial-gradient(ellipse at 15% 20%,#253e50,transparent 65%),radial-gradient(ellipse at 90% 80%,#3c3346,transparent 65%),#151c26!important;background-attachment:fixed!important}
+html[data-codex-day-appearance] main:is(.main-surface,[data-app-shell-main-surface],[class*="_MainContentSurface_"]) {background:transparent!important;color:var(--color-text)!important;background-attachment:fixed!important}
+html[data-codex-day-appearance] aside.app-shell-left-panel,html[data-codex-day-appearance] header:is(.app-header-tint,[data-app-shell-header-edge-scroll],[class*="_Header_"]) {background:var(--day-panel)!important;color:var(--color-text)!important;border-color:var(--day-border)!important;box-shadow:none!important;background-attachment:fixed!important}
+html[data-codex-day-appearance] :is(.composer-surface-chrome,[class*="_ComposerLayoutRoot_"],[data-composer-surface-variant][data-composer-radius-variant]) {background:var(--day-field)!important;color:var(--color-text)!important;border:1px solid var(--day-border)!important;box-shadow:0 8px 32px #0000000c!important}

@@ -32,7 +32,7 @@ python3 scripts/install.py
 
 ## 使用
 
-Regular glass 为默认可读材质；底部按钮可切换更通透的 Clear glass。正文和滚动容器不加模糊，面板适配深浅模式与增强对比度/减少透明度设置。
+底部 Light / Dark 按钮同时切换整页与卡片配色，并记住选择。Regular glass 为默认半透明材质；底部按钮可切换更通透的 Clear glass。正文和滚动容器不加模糊，面板适配深浅模式与增强对比度/减少透明度设置。
 
 点击 **Day** 或按 **⌘⇧D** 开关；**Esc** 收起。点击月历日期查看当天待办；Unscheduled 保存无日期事项；Suggestions 审核本地提取结果。
 

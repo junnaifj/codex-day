@@ -48,7 +48,7 @@ class Session {
   async ensure(){
     if(!this.context){await this.inject();return}
     try{const result=await this.send('Runtime.evaluate',{contextId:this.context,expression:'globalThis.__codexDayUI?.verify()',returnByValue:true});
-      if(result.exceptionDetails||result.result?.value?.version!=='0.2.0')await this.inject();
+      if(result.exceptionDetails||result.result?.value?.version!=='0.3.0')await this.inject();
     }catch{await this.inject()}
   }
   async binding(params){
@@ -68,9 +68,9 @@ async function main(){
     for(const [id,s] of sessions)if(s.closed||!targets.some(t=>t.id===id)){s.ws.close();sessions.delete(id)}
     for(const target of targets)if(!sessions.has(target.id)){const s=new Session(target);try{await s.start();sessions.set(target.id,s)}catch(e){s.ws.close();throw e}}
     for(const session of sessions.values())await session.ensure();
-    await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'connected',windows:sessions.size,version:'0.2.0',checkedAt:new Date().toISOString()}),{mode:0o600});
+    await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'connected',windows:sessions.size,version:'0.3.0',checkedAt:new Date().toISOString()}),{mode:0o600});
     previous='';
-  }catch(e){for(const session of sessions.values())session.ws.close();sessions.clear();await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'waiting-for-extension-launch',version:'0.2.0',checkedAt:new Date().toISOString()}),{mode:0o600}).catch(()=>{});const message='Waiting for Codex local extension connection.';if(previous!==message){console.log(message);previous=message}}
+  }catch(e){for(const session of sessions.values())session.ws.close();sessions.clear();await fs.writeFile(path.join(base,'connection.json'),JSON.stringify({phase:'waiting-for-extension-launch',version:'0.3.0',checkedAt:new Date().toISOString()}),{mode:0o600}).catch(()=>{});const message='Waiting for Codex local extension connection.';if(previous!==message){console.log(message);previous=message}}
   await sleep(5000)}
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(()=>process.exit(1));

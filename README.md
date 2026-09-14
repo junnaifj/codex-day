@@ -5,7 +5,7 @@ Codex 右上角的 **Day** 按钮，展开或收起两张毛玻璃便利贴：�
 - Apple Calendar 实时读取；已确认待办可双向同步至 Apple Reminders 专用 `Codex Day` 列表。
 - 本地每日 00:00 提取 Codex 对话中的明确清单/待办段落；休眠后补执行。同一天不重复扫描，不调用模型、不消耗 token。
 - 建议先审核再加入，支持编辑、改日期、完成和删除；手动修改不会被每日扫描覆盖。
-- 运行时毛玻璃主题可移除，不改官方 `.app`、`app.asar`、签名或 Codex 设置。
+- Day 卡片毛玻璃主题可移除，不改官方 `.app`、`app.asar`、签名或 Codex 设置。
 
 ## 安装
 
@@ -32,7 +32,7 @@ python3 scripts/install.py
 
 ## 使用
 
-底部 Light / Dark 按钮同时切换整页与卡片配色，并记住选择。Regular glass 为默认半透明材质；底部按钮可切换更通透的 Clear glass。正文和滚动容器不加模糊，面板适配深浅模式与增强对比度/减少透明度设置。
+底部 Light / Dark 仅切换 Day 卡片；主窗口使用 Codex 自己的外观设置。主窗口透出桌面尚未可靠实现。Regular glass 为默认半透明材质；底部按钮可切换更通透的 Clear glass。正文和滚动容器不加模糊，面板适配深浅模式与增强对比度/减少透明度设置。
 
 点击 **Day** 或按 **⌘⇧D** 开关；**Esc** 收起。点击月历日期查看当天待办；Unscheduled 保存无日期事项；Suggestions 审核本地提取结果。
 
